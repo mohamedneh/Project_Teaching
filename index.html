@@ -101,8 +101,11 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            margin-right: 12px;
+            flex-shrink: 0;
         }
+
+        html[dir="ltr"] .question-number { margin-right: 12px; }
+        html[dir="rtl"] .question-number { margin-left: 12px; }
 
         .question-title { font-weight: 600; font-size: 1.1rem; flex: 1; line-height: 1.4; }
 
@@ -118,7 +121,10 @@
         }
         .option:hover { border-color: var(--primary); background: #f7fafc; }
         .option.selected { border-color: var(--primary); background: #e8f0fe; }
-        .option input { margin-right: 12px; pointer-events: none; }
+        .option input { pointer-events: none; }
+        
+        html[dir="ltr"] .option input { margin-right: 12px; }
+        html[dir="rtl"] .option input { margin-left: 12px; }
 
         .submit-btn {
             display: block;
@@ -163,6 +169,21 @@
             justify-content: space-between;
             align-items: center;
         }
+        .modal-header h2 { flex: 1; }
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close-btn:hover { opacity: 0.8; }
         .modal-body { padding: 25px; }
 
         .score-box {
@@ -177,7 +198,6 @@
         .lang-btn {
             position: fixed;
             top: 15px;
-            right: 15px;
             padding: 10px 20px;
             background: rgba(255,255,255,0.25);
             border: 1px solid rgba(255,255,255,0.4);
@@ -187,6 +207,9 @@
             z-index: 100;
             font-weight: 600;
         }
+
+        html[dir="ltr"] .lang-btn { right: 15px; }
+        html[dir="rtl"] .lang-btn { left: 15px; }
     </style>
 </head>
 <body>
@@ -230,6 +253,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 data-en="Results Summary" data-ar="ملخص النتائج">Results Summary</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body" id="modalBody"></div>
         </div>
@@ -256,8 +280,8 @@
                     ar: "ما هي الميزة الأساسية لاستخدام 'وضع عدم الاتصال' في إعدادات Google Drive؟"
                 },
                 options: {
-                    en: ["It makes your computer run faster", "You can edit Docs/Sheets without internet", "It deletes old files automatically", "It prevents others from seeing files", "It increases storage"],
-                    ar: ["يجعل الكمبيوتر يعمل بشكل أسرع", "يمكنك تحرير الملفات بدون اتصال بالإنترنت", "يحذف الملفات القديمة تلقائياً", "يمنع الآخرين من رؤية الملفات", "يزيد من السعة التخزينية"]
+                    en: ["It makes your computer run faster", "You can edit Docs/Sheets without internet", "It deletes old files automatically", "It prevents others from seeing files", "It increases storage space"],
+                    ar: ["يجعل الكمبيوتر يعمل بشكل أسرع", "يمكنك تحرير الملفات بدون اتصال بالإنترنت", "يحذف الملفات القديمة تلقائياً", "يمنع الآخرين من رؤية الملفات", "يزيد من مساحة التخزين"]
                 },
                 correct: 1
             },
@@ -292,8 +316,8 @@
                     ar: "في تطبيق Google Drive للحاسوب، ماذا يحدث إذا اخترت خيار 'مرآة الملفات' (Mirror files)؟"
                 },
                 options: {
-                    en: ["Files are deleted from the cloud", "Files are stored only in the cloud", "All files are stored both in the cloud and locally", "Files are converted to shortcuts", "Files are backed up automatically"],
-                    ar: ["يتم حذف الملفات من السحاب", "يتم تخزين الملفات في السحاب فقط", "يتم تخزين جميع الملفات في السحاب والجهاز المحلي", "يتم تحويل الملفات إلى اختصارات", "يتم نسخ احتياطي للملفات تلقائياً"]
+                    en: ["Files are deleted from the cloud", "Files are stored only in the cloud", "All files are stored both in the cloud and locally", "Files are converted to shortcuts", "Files are encrypted"],
+                    ar: ["يتم حذف الملفات من السحاب", "يتم تخزين الملفات في السحاب فقط", "يتم تخزين جميع الملفات في السحاب وعلى جهازك محلياً", "يتم تحويل الملفات إلى اختصارات", "يتم تشفير الملفات"]
                 },
                 correct: 2
             },
@@ -400,6 +424,14 @@
             }, 1000);
         }
 
+        function closeModal() {
+            document.getElementById('resultModal').classList.remove('active');
+        }
+
+        function sanitizeFilename(str) {
+            return str.replace(/[^a-zA-Z0-9_\-]/g, '_').substring(0, 50);
+        }
+
         function submitQuiz() {
             const group = document.getElementById('groupName').value;
             const s1 = document.getElementById('student1').value;
@@ -420,21 +452,24 @@
                 csvContent += `${q.id},${answers[q.id] ?? 'None'},${answers[q.id] === q.correct}\n`;
             });
 
-            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${group}_results.csv`;
+            a.download = `${sanitizeFilename(group)}_results.csv`;
             a.click();
 
             // Show results
+            const s2 = document.getElementById('student2').value;
             document.getElementById('modalBody').innerHTML = `
                 <div class="score-box">
                     <div class="score">${score} / ${questions.length}</div>
                     <p>${currentLang === 'en' ? 'Great job!' : 'عمل جيد!'}</p>
                 </div>
-                <p><strong>Group:</strong> ${group}</p>
-                <p><strong>Status:</strong> Results downloaded as CSV.</p>
+                <p><strong>${currentLang === 'en' ? 'Group:' : 'المجموعة:'}​</strong> ${group}</p>
+                <p><strong>${currentLang === 'en' ? 'Student 1:' : 'الطالب 1:'}​</strong> ${s1}</p>
+                ${s2 ? `<p><strong>${currentLang === 'en' ? 'Student 2:' : 'الطالب 2:'}​</strong> ${s2}</p>` : ''}
+                <p><strong>${currentLang === 'en' ? 'Status:' : 'الحالة:'}​</strong> ${currentLang === 'en' ? 'Results downloaded as CSV.' : 'تم تحميل النتائج كملف CSV.'}</p>
             `;
             document.getElementById('resultModal').classList.add('active');
         }
