@@ -1,1 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Second Year English Quiz - University of Tissemsilt</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2c5282;
+            --secondary: #c9a227;
+            --success: #38a169;
+            --error: #e53e3e;
+            --bg: #f0f4f8;
+            --card-bg: #ffffff;
+            --text: #1a202c;
+            --text-secondary: #4a5568;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; }
 
+        .header {
+            background: linear-gradient(135deg, var(--primary), #2d4a6f);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.5rem; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 0.9rem; }
+
+        .container { max-width: 800px; margin: 30px auto; padding: 0 15px; }
+
+        .timer-bar {
+            background: var(--secondary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .card-body { padding: 20px; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .input-group input:focus { outline: none; border-color: var(--primary); }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .question-title { font-weight: 600; font-size: 1rem; flex: 1; }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover { border-color: var(--primary); background: #f7fafc; }
+        .option.selected { border-color: var(--primary); background: #e8f0fe; }
+        .option input { margin-right: 12px; }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 30px auto;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .submit-btn:hover { background: var(--primary-light); }
+
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 { font-size: 1.2rem; }
+        .modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .modal-body { padding: 20px; }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .result-item .q-num {
+            background: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            margin-right: 10px;
+        }
+        .result-item.correct { background: #c6f6d5; }
+        .result-item.wrong { background: #fed7d7; }
+
+        .score-box {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .score-box .score { font-size: 2.5rem; font-weight: 700; color: var(--primary); }
+
+        .lang-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.2rem; }
+            .container { margin: 15px auto; padding: 0 10px; }
+            .question-card { padding: 15px; }
+            .option { padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <button class="lang-btn" onclick="toggleLang()">العربية</button>
+
+    <header class="header">
+        <h1 data-en="Second Year English Quiz" data-ar="اختبار اللغة الإنجليزية للسنة الثانية">Second Year English Quiz</h1>
+        <p>University of Tissemsilt - Faculty of Letters and Foreign Languages</p>
+    </header>
+
+    <div class="container">
+        <div class="timer-bar">
+            <span data-en="Time Remaining" data-ar="الوقت المتبقي">Time Remaining</span>
+            <span id="timer">10:00</span>
+        </div>
+
+        <div class="card">
+            <div class="card-header" data-en="Group Information" data-ar="معلومات المجموعة">Group Information</div>
+            <div class="card-body">
+                <div class="input-group">
+                    <label data-en="Group Name *" data-ar="اسم المجموعة *">Group Name *</label>
+                    <input type="text" id="groupName" placeholder="Enter group name">
+                </div>
+                <div class="input-group">
+                    <label data-en="Student 1 Name *" data-ar="اسم الطالب 1 *">Student 1 Name *</label>
+                    <input type="text" id="student1" placeholder="Student 1">
+                </div>
+                <div class="input-group">
+                    <label data-en="Student 2 Name (Optional)" data-ar="اسم الطالب 2 (اختياري)">Student 2 Name (Optional)</label>
+                    <input type="text" id="student2" placeholder="Student 2">
+                </div>
+                <div class="input-group">
+                    <label data-en="Student 3 Name (Optional)" data-ar="اسم الطالب 3 (اختياري)">Student 3 Name (Optional)</label>
+                    <input type="text" id="student3" placeholder="Student 3">
+                </div>
+                <div class="input-group">
+                    <label data-en="Student 4 Name (Optional)" data-ar="اسم الطالب 4 (اختياري)">Student 4 Name (Optional)</label>
+                    <input type="text" id="student4" placeholder="Student 4">
+                </div>
+            </div>
+        </div>
+
+        <div id="questions-container"></div>
+
+        <button class="submit-btn" onclick="submitQuiz()" data-en="Submit Quiz" data-ar="إرسال الاختبار">Submit Quiz</button>
+    </div>
+
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-en="Quiz Results" data-ar="نتائج الاختبار">Quiz Results</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const defaultQuestions = [
+            {id:1,type:"drive",question:{en:"What is the max file size you can upload to Google Drive?",ar:"ما الحد الأقصى لحجم الملف في Google Drive؟"},options:{en:[{text:"5 GB",correct:false},{text:"15 GB",correct:true},{text:"100 GB",correct:false},{text:"1 TB",correct:false}],ar:[{text:"5 غيغابايت",correct:false},{text:"15 غيغابايت",correct:true},{text:"100 غيغابايت",correct:false},{text:"1 تيرابايت",correct:false}]}},
+            {id:2,type:"drive",question:{en:"Which permission allows editing a Google Drive file?",ar:"أي إذن يسمح بتحرير ملف في Google Drive؟"},options:{en:[{text:"Viewer",correct:false},{text:"Commenter",correct:false},{text:"Editor",correct:true},{text:"Owner",correct:false}],ar:[{text:"مشاهد",correct:false},{text:"معلق",correct:false},{text:"محرر",correct:true},{text:"مالك",correct:false}]}},
+            {id:3,type:"drive",question:{en:"Sharing with 'Anyone with link' means:",ar:"مشاركة مع 'أي شخص لديه الرابط' تعني:"},options:{en:[{text:"Anyone can edit",correct:false},{text:"Anyone can view only",correct:true},{text:"Only organization members",correct:false},{text:"File becomes public",correct:false}],ar:[{text:"يمكن لأي شخص التحرير",correct:false},{text:"يمكن للمشاهدة فقط",correct:true},{text:"فقط أعضاء المؤسسة",correct:false},{text:"الملف يصبح عامًا",correct:false}]}},
+            {id:4,type:"drive",question:{en:"How can you organize files in Google Drive?",ar:"كيف تنظم الملفات في Google Drive؟"},options:{en:[{text:"Folders only",correct:false},{text:"Color codes only",correct:false},{text:"Folders and labels",correct:true},{text:"Special characters",correct:false}],ar:[{text:"مجلدات فقط",correct:false},{text:"رموز ألوان فقط",correct:false},{text:"مجلدات وتسميات",correct:true},{text:"أحرف خاصة",correct:false}]}},
+            {id:5,type:"drive",question:{en:"What is 'Offline mode' in Google Drive used for?",ar:"ما هو 'وضع عدم الاتصال' في Google Drive؟"},options:{en:[{text:"Delete files",correct:false},{text:"Access without internet",correct:true},{text:"Share faster",correct:false},{text:"Convert to PDF",correct:false}],ar:[{text:"حذف الملفات",correct:false},{text:"الوصول بدون إنترنت",correct:true},{text:"مشاركة أسرع",correct:false},{text:"تحويل PDF",correct:false}]}},
+            {id:6,type:"moodle",question:{en:"How to login to Moodle at Tissemsilt University?",ar:"كيف تسجل الدخول لـ Moodle في جامعة تيسمسيلت؟"},options:{en:[{text:"University email",correct:true},{text:"Facebook",correct:false},{text:"Phone number",correct:false},{text:"No login needed",correct:false}],ar:[{text:"البريد الجامعي",correct:true},{text:"Facebook",correct:false},{text:"رقم الهاتف",correct:false},{text:"لا يحتاج تسجيل",correct:false}]}},
+            {id:7,type:"moodle",question:{en:"How to access 2nd year English course on Moodle?",ar:"كيف تصل لمقرر الإنجليزية للسنة الثانية على Moodle؟"},options:{en:[{text:"Search 'English 2'",correct:true},{text:"Auto enrolled",correct:false},{text:"Contact admin",correct:false},{text:"Not available",correct:false}],ar:[{text:"ابحث عن 'English 2'",correct:true},{text:"مسجل تلقائي",correct:false},{text:"تواصل مع المسؤول",correct:false},{text:"غير متوفر",correct:false}]}}
+        ];
+
+        let questions = JSON.parse(localStorage.getItem('quizQuestions'));
+        if (!questions || !Array.isArray(questions) || questions.length === 0) {
+            questions = defaultQuestions;
+            localStorage.setItem('quizQuestions', JSON.stringify(questions));
+        }
+
+        let currentLang = 'en';
+        let answers = {};
+        let timeLeft = 600;
+        let timerInterval;
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+            
+            questions.forEach(function(q, index) {
+                const qData = q.question[currentLang];
+                const options = q.options[currentLang];
+                
+                let html = '<div class="question-card">';
+                html += '<div class="question-header">';
+                html += '<span class="question-number">' + (index + 1) + '</span>';
+                html += '<span class="question-title">' + qData + '</span>';
+                html += '</div>';
+                
+                options.forEach(function(opt, i) {
+                    const selected = answers[q.id] === i ? 'selected' : '';
+                    html += '<label class="option ' + selected + '" onclick="selectOption(' + q.id + ', ' + i + ', this)">';
+                    html += '<input type="radio" name="q' + q.id + '" ' + (answers[q.id] === i ? 'checked' : '') + '>';
+                    html += '<span>' + opt.text + '</span>';
+                    html += '</label>';
+                });
+                
+                html += '</div>';
+                container.innerHTML += html;
+            });
+        }
+
+        function selectOption(qId, optIndex, element) {
+            answers[qId] = optIndex;
+            var opts = element.closest('.question-card').querySelectorAll('.option');
+            for (var i = 0; i < opts.length; i++) {
+                opts[i].classList.remove('selected');
+            }
+            element.classList.add('selected');
+            localStorage.setItem('quizAnswers', JSON.stringify(answers));
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'العربية' : 'English';
+            
+            var els = document.querySelectorAll('[data-en]');
+            for (var i = 0; i < els.length; i++) {
+                els[i].textContent = els[i].getAttribute('data-' + currentLang);
+            }
+            renderQuestions();
+        }
+
+        function startTimer() {
+            updateTimer();
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                updateTimer();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimer() {
+            var min = Math.floor(timeLeft / 60);
+            var sec = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                (min < 10 ? '0' + min : min) + ':' + (sec < 10 ? '0' + sec : sec);
+        }
+
+        function submitQuiz() {
+            var groupName = document.getElementById('groupName').value.trim();
+            var student1 = document.getElementById('student1').value.trim();
+            
+            if (!groupName || !student1) {
+                alert(currentLang === 'en' ? 'Please fill group name and student 1' : 'الرجاء ملء اسم المجموعة والطالب 1');
+                return;
+            }
+
+            var score = 0;
+            var results = [];
+            
+            questions.forEach(function(q, index) {
+                var userAnswer = answers[q.id];
+                var correctIdx = q.options[currentLang].findIndex(function(o) { return o.correct; });
+                var isCorrect = userAnswer === correctIdx;
+                if (isCorrect) score++;
+                
+                results.push({
+                    num: index + 1,
+                    userAnswer: userAnswer !== undefined ? q.options[currentLang][userAnswer].text : 'Not answered',
+                    isCorrect: isCorrect
+                });
+            });
+
+            var students = [student1];
+            ['student2', 'student3', 'student4'].forEach(function(id) {
+                var val = document.getElementById(id).value.trim();
+                if (val) students.push(val);
+            });
+
+            var submission = {
+                groupName: groupName,
+                students: students,
+                score: score,
+                date: new Date().toISOString()
+            };
+
+            var submissions = JSON.parse(localStorage.getItem('quizSubmissions') || '[]');
+            submissions.push(submission);
+            localStorage.setItem('quizSubmissions', JSON.stringify(submissions));
+            localStorage.setItem('quizSubmitted', 'true');
+
+            clearInterval(timerInterval);
+
+            var html = '<div><strong>Group:</strong> ' + groupName + '</div>';
+            html += '<div><strong>Students:</strong> ' + students.join(', ') + '</div>';
+            html += '<div style="margin:15px 0;">';
+            
+            results.forEach(function(r) {
+                html += '<div class="result-item ' + (r.isCorrect ? 'correct' : 'wrong') + '">';
+                html += '<span class="q-num">' + r.num + '</span>';
+                html += '<span style="flex:1">' + r.userAnswer + '</span>';
+                html += '<span>' + (r.isCorrect ? '✓' : '✗') + '</span>';
+                html += '</div>';
+            });
+            
+            html += '</div>';
+            html += '<div class="score-box">';
+            html += '<div class="score">' + score + ' / 7</div>';
+            html += '<div>Your Score</div>';
+            html += '</div>';
+
+            document.getElementById('modalBody').innerHTML = html;
+            document.getElementById('resultModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                window.location.href = 'admin.html';
+            }
+        });
+
+        renderQuestions();
+        startTimer();
+    </script>
+</body>
+</html>
