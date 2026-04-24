@@ -3,221 +3,717 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Second Year English Quiz - University of Tissemsilt</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <title>ICT Technical Skills Assessment - University of Tissemsilt</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Cairo:wght@400;600;700&display=swap">
     <style>
         :root {
-            --primary: #1a365d;
-            --primary-light: #2c5282;
-            --secondary: #c9a227;
-            --success: #38a169;
-            --error: #e53e3e;
-            --bg: #f0f4f8;
+            --primary: #1e3a8a;
+            --primary-light: #2e5aa4;
+            --primary-dark: #1a2e6e;
+            --secondary: #d4af37;
+            --secondary-light: #e8c547;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
-            --text: #1a202c;
-            --text-secondary: #4a5568;
+            --text: #1e293b;
+            --text-secondary: #64748b;
             --border: #e2e8f0;
-            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow: 0 8px 16px rgba(0,0,0,0.1);
+            --shadow-lg: 0 16px 32px rgba(0,0,0,0.15);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
-        body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 50px; }
 
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body { 
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
+            color: var(--text); 
+            min-height: 100vh; 
+            padding-bottom: 50px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        html[dir="rtl"] body {
+            font-family: 'Cairo', 'Roboto', sans-serif;
+        }
+
+        /* Header with Logo */
         .header {
-            background: linear-gradient(135deg, var(--primary), #2d4a6f);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 30px 20px;
+            padding: 40px 20px;
             text-align: center;
-        }
-        .header h1 { font-size: 1.8rem; margin-bottom: 10px; }
-        .header p { opacity: 0.9; font-size: 1rem; }
-
-        .container { max-width: 800px; margin: 30px auto; padding: 0 15px; }
-
-        .timer-bar {
-            background: var(--secondary);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-weight: 600;
-            position: sticky;
-            top: 10px;
-            z-index: 10;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+            position: relative;
             overflow: hidden;
         }
 
-        .card-header {
-            background: var(--primary);
-            color: white;
-            padding: 15px 20px;
-            font-weight: 600;
-            font-size: 1.1rem;
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
         }
 
-        .card-body { padding: 20px; }
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
 
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+        .logo-container {
+            margin-bottom: 25px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #c9a227 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            position: relative;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .header h1 { 
+            font-size: 2rem; 
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header .university-name {
+            font-size: 1rem;
+            opacity: 0.95;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .header .faculty-name {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin-top: 5px;
+        }
+
+        .container { 
+            max-width: 900px; 
+            margin: 40px auto; 
+            padding: 0 15px; 
+        }
+
+        /* Timer Bar */
+        .timer-bar {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            color: var(--primary);
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            position: sticky;
+            top: 10px;
+            z-index: 10;
+            box-shadow: var(--shadow);
+        }
+
+        .timer-bar span:first-child {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #timer {
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Card Styles */
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 18px 24px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .card-body { 
+            padding: 28px; 
+        }
+
+        .input-group { 
+            margin-bottom: 20px; 
+        }
+
+        .input-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
         .input-group input {
             width: 100%;
-            padding: 12px;
+            padding: 14px 16px;
             border: 2px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f9fafb;
         }
-        .input-group input:focus { outline: none; border-color: var(--primary); }
 
+        .input-group input:focus { 
+            outline: none; 
+            border-color: var(--secondary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        /* Question Card */
         .question-card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 15px;
             box-shadow: var(--shadow);
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 28px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .question-card:hover {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--secondary);
         }
 
         .question-header {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .question-number {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            min-width: 32px;
-            height: 32px;
+            min-width: 40px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: 700;
             flex-shrink: 0;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
         }
 
-        html[dir="ltr"] .question-number { margin-right: 12px; }
-        html[dir="rtl"] .question-number { margin-left: 12px; }
+        html[dir="ltr"] .question-number { margin-right: 16px; }
+        html[dir="rtl"] .question-number { margin-left: 16px; }
 
-        .question-title { font-weight: 600; font-size: 1.1rem; flex: 1; line-height: 1.4; }
+        .question-title { 
+            font-weight: 600; 
+            font-size: 1.1rem; 
+            flex: 1; 
+            line-height: 1.5; 
+            color: var(--text);
+        }
 
+        /* Options */
         .option {
             display: flex;
             align-items: center;
-            padding: 12px 15px;
+            padding: 16px 18px;
             border: 2px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 10px;
+            border-radius: 12px;
+            margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+            position: relative;
         }
-        .option:hover { border-color: var(--primary); background: #f7fafc; }
-        .option.selected { border-color: var(--primary); background: #e8f0fe; }
-        .option input { pointer-events: none; }
-        
-        html[dir="ltr"] .option input { margin-right: 12px; }
-        html[dir="rtl"] .option input { margin-left: 12px; }
 
+        .option:hover { 
+            border-color: var(--secondary);
+            background: rgba(212, 175, 55, 0.05);
+            transform: translateX(4px);
+        }
+
+        html[dir="rtl"] .option:hover {
+            transform: translateX(-4px);
+        }
+
+        .option.selected { 
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+        }
+
+        .option input { 
+            pointer-events: none;
+            accent-color: var(--secondary);
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        html[dir="ltr"] .option input { margin-right: 14px; }
+        html[dir="rtl"] .option input { margin-left: 14px; }
+
+        .option span {
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        /* Submit Button */
         .submit-btn {
             display: block;
             width: 100%;
-            max-width: 400px;
-            margin: 40px auto;
+            max-width: 450px;
+            margin: 50px auto;
             padding: 18px;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(30, 58, 138, 0.3);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
-        .submit-btn:hover { background: var(--primary-light); transform: translateY(-2px); }
 
+        .submit-btn:hover { 
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(30, 58, 138, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Modal Styles */
         .modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.6);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.3s ease;
         }
+
         .modal.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         .modal-content {
             background: white;
-            border-radius: 12px;
-            max-width: 600px;
+            border-radius: 20px;
+            max-width: 650px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
+            animation: slideUp 0.4s ease;
+            box-shadow: var(--shadow-lg);
         }
+
         .modal-header {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 20px;
+            padding: 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 20px 20px 0 0;
         }
-        .modal-header h2 { flex: 1; }
+
+        .modal-header h2 { 
+            flex: 1;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
         .close-btn {
             background: none;
             border: none;
             color: white;
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
             padding: 0;
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
+            border-radius: 50%;
         }
-        .close-btn:hover { opacity: 0.8; }
-        .modal-body { padding: 25px; }
 
-        .score-box {
+        .close-btn:hover { 
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body { 
+            padding: 32px; 
+        }
+
+        /* Score Display */
+        .score-container {
             text-align: center;
-            padding: 30px;
-            background: #e8f0fe;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 35px;
         }
-        .score-box .score { font-size: 3rem; font-weight: 800; color: var(--primary); }
 
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 12px 32px rgba(212, 175, 55, 0.3);
+            animation: pulse 0.6s ease-out;
+        }
+
+        .score-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .score-total {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .performance-message {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .performance-message.excellent { color: #10b981; }
+        .performance-message.very-good { color: #3b82f6; }
+        .performance-message.good { color: var(--secondary); }
+        .performance-message.needs-improvement { color: #f59e0b; }
+
+        /* Results Section */
+        .results-section {
+            margin: 30px 0;
+        }
+
+        .results-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .student-list {
+            background: linear-gradient(135deg, #f8fafc 0%, #f0f4f8 100%);
+            border-radius: 12px;
+            padding: 18px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .student-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .student-item:not(:last-child) {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .student-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-right: 12px;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+        }
+
+        html[dir="rtl"] .student-avatar {
+            margin-right: 0;
+            margin-left: 12px;
+        }
+
+        .student-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .student-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 16px;
+        }
+
+        .status-badge.success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        /* Language Toggle */
         .lang-btn {
             position: fixed;
-            top: 15px;
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.25);
-            border: 1px solid rgba(255,255,255,0.4);
+            top: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border: 2px solid rgba(255,255,255,0.3);
             color: white;
-            border-radius: 20px;
+            border-radius: 25px;
             cursor: pointer;
             z-index: 100;
             font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+            letter-spacing: 0.5px;
         }
 
-        html[dir="ltr"] .lang-btn { right: 15px; }
-        html[dir="rtl"] .lang-btn { left: 15px; }
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(30, 58, 138, 0.3);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+        }
+
+        html[dir="ltr"] .lang-btn { right: 20px; }
+        html[dir="rtl"] .lang-btn { left: 20px; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 15px;
+            }
+
+            .logo {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .card-body {
+                padding: 20px;
+            }
+
+            .modal-content {
+                width: 95%;
+                max-height: 85vh;
+            }
+
+            .modal-header {
+                padding: 20px;
+            }
+
+            .modal-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+
+            .score-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .score-value {
+                font-size: 2.5rem;
+            }
+
+            .performance-message {
+                font-size: 1.2rem;
+            }
+
+            .submit-btn {
+                max-width: 100%;
+                font-size: 1rem;
+                padding: 16px;
+            }
+
+            .container {
+                margin: 20px auto;
+            }
+
+            .timer-bar {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.3rem;
+            }
+
+            .header .university-name {
+                font-size: 0.9rem;
+            }
+
+            .question-title {
+                font-size: 1rem;
+            }
+
+            .option {
+                padding: 12px 14px;
+                font-size: 0.95rem;
+            }
+
+            .score-value {
+                font-size: 2rem;
+            }
+
+            .performance-message {
+                font-size: 1rem;
+            }
+
+            .student-list {
+                padding: 14px;
+            }
+        }
+
+        /* Scrollbar Styling */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
     </style>
 </head>
 <body>
-    <button class="lang-btn" onclick="toggleLang()">العربية</button>
+    <button class="lang-btn" onclick="toggleLang()" data-en="العربية" data-ar="English">العربية</button>
 
     <header class="header">
-        <h1 id="mainTitle" data-en="ICT Technical Skills Assessment" data-ar="اختبار مهارات تكنولوجيا المعلومات">ICT Technical Skills Assessment</h1>
-        <p>University of Tissemsilt - Faculty of Letters and Foreign Languages</p>
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="logo">🎓</div>
+            </div>
+            <h1 id="mainTitle" data-en="ICT Technical Skills Assessment" data-ar="اختبار مهارات تكنولوجيا المعلومات">ICT Technical Skills Assessment</h1>
+            <p class="university-name" data-en="University of Tissemsilt" data-ar="جامعة تيسمسيلت">University of Tissemsilt</p>
+            <p class="faculty-name" data-en="Faculty of Letters and Foreign Languages" data-ar="كلية الآداب واللغات الأجنبية">Faculty of Letters and Foreign Languages</p>
+        </div>
     </header>
 
     <div class="container">
@@ -231,15 +727,15 @@
             <div class="card-body">
                 <div class="input-group">
                     <label data-en="Group Name *" data-ar="اسم المجموعة *">Group Name *</label>
-                    <input type="text" id="groupName" placeholder="...">
+                    <input type="text" id="groupName" placeholder="Enter group name">
                 </div>
                 <div class="input-group">
                     <label data-en="Student 1 Name *" data-ar="اسم الطالب 1 *">Student 1 Name *</label>
-                    <input type="text" id="student1" placeholder="...">
+                    <input type="text" id="student1" placeholder="Enter first student name">
                 </div>
                 <div class="input-group">
                     <label data-en="Student 2 Name (Optional)" data-ar="اسم الطالب 2 (اختياري)">Student 2 Name (Optional)</label>
-                    <input type="text" id="student2">
+                    <input type="text" id="student2" placeholder="Enter second student name (optional)">
                 </div>
             </div>
         </div>
@@ -269,7 +765,7 @@
                 },
                 options: {
                     en: ["Computers folder", "Shared with me section", "Trash folder", "Google Photos", "Starred area"],
-                    ar: ["مجلد أجهزة الكمبيوتر (Computers)", "قسم تمت مشاركتها معي (Shared with me)", "سلة المهملات (Trash)", "صور جوجل (Google Photos)", "المنطقة المميزة (Starred area)"]
+                    ar: ["مجلد أجهزة الكمبيوتر (Computers)", "قسم تمت مشاركتها معي (Shared with me)", "سلة المهملات (Trash)", "صور جوجل (Google Photos)", "المفضلة (Starred)"]
                 },
                 correct: 1
             },
@@ -280,8 +776,8 @@
                     ar: "ما هي الميزة الأساسية لاستخدام 'وضع عدم الاتصال' في إعدادات Google Drive؟"
                 },
                 options: {
-                    en: ["It makes your computer run faster", "You can edit Docs/Sheets without internet", "It deletes old files automatically", "It prevents others from seeing files", "It increases storage space"],
-                    ar: ["يجعل الكمبيوتر يعمل بشكل أسرع", "يمكنك تحرير الملفات بدون اتصال بالإنترنت", "يحذف الملفات القديمة تلقائياً", "يمنع الآخرين من رؤية الملفات", "يزيد من مساحة التخزين"]
+                    en: ["It makes your computer run faster", "You can edit Docs/Sheets without internet", "It deletes old files automatically", "It prevents others from seeing files", "It increases storage"],
+                    ar: ["يجعل الكمبيوتر يعمل بشكل أسرع", "يمكنك تحرير الملفات بدون اتصال بالإنترنت", "يحذف الملفات القديمة تلقائياً", "يمنع الآخرين من رؤية الملفات", "يزيد المساحة التخزينية"]
                 },
                 correct: 1
             },
@@ -316,8 +812,8 @@
                     ar: "في تطبيق Google Drive للحاسوب، ماذا يحدث إذا اخترت خيار 'مرآة الملفات' (Mirror files)؟"
                 },
                 options: {
-                    en: ["Files are deleted from the cloud", "Files are stored only in the cloud", "All files are stored both in the cloud and locally", "Files are converted to shortcuts", "Files are encrypted"],
-                    ar: ["يتم حذف الملفات من السحاب", "يتم تخزين الملفات في السحاب فقط", "يتم تخزين جميع الملفات في السحاب وعلى جهازك محلياً", "يتم تحويل الملفات إلى اختصارات", "يتم تشفير الملفات"]
+                    en: ["Files are deleted from the cloud", "Files are stored only in the cloud", "All files are stored both in the cloud and locally", "Files are converted to shortcuts", "Files are compressed"],
+                    ar: ["يتم حذف الملفات من السحاب", "يتم تخزين الملفات في السحاب فقط", "يتم تخزين جميع الملفات في السحاب والجهاز المحلي", "يتم تحويل الملفات إلى اختصارات", "يتم ضغط الملفات"]
                 },
                 correct: 2
             },
@@ -341,18 +837,18 @@
                 },
                 options: {
                     en: [
-                        "Cours --> Faculté des lettres et des langues --> Département des lettres et langue anglaise --> 2eme Annee Licence --> Semestre 4 --> CIVILIZATION OF THE TARGET LANGUAGE",
-                        "Cours --> 2eme Annee Licence --> Département des lettres et langue anglaise --> Faculté des lettres et des langues --> Semestre 4 --> CIVILIZATION",
-                        "Cours --> Département des lettres et langue anglaise --> 2eme Annee Licence --> Faculté des lettres et des langues --> Semestre 4 --> CIVILIZATION",
-                        "Cours --> Faculté des lettres et des langues --> Semestre 4 --> 2eme Annee Licence --> Département des lettres et langue anglaise --> CIVILIZATION",
-                        "Cours --> Semestre 4 --> 2eme Annee Licence --> Faculté des lettres et des langues --> Département des lettres et langue anglaise --> CIVILIZATION"
+                        "Cours → Faculté des lettres et des langues → Département des lettres et langue anglaise → 2eme Annee Licence → Semestre 4 → CIVILIZATION",
+                        "Cours → 2eme Annee Licence → Département des lettres et langue anglaise → Faculté des lettres et des langues → Semestre 4 → CIVILIZATION",
+                        "Cours → Département des lettres et langue anglaise → 2eme Annee Licence → Faculté des lettres et des langues → Semestre 4 → CIVILIZATION",
+                        "Cours → Faculté des lettres et des langues → Semestre 4 → 2eme Annee Licence → Département des lettres et langue anglaise → CIVILIZATION",
+                        "Cours → Semestre 4 → 2eme Annee Licence → Faculté des lettres et des langues → Département des lettres et langue anglaise → CIVILIZATION"
                     ],
                     ar: [
-                        "الخيار أ: المسار المتسلسل (كلية -> قسم -> سنة ثانية -> سداسي 4)",
-                        "الخيار ب: مسار عشوائي يبدأ بالسنة الثانية",
-                        "الخيار ج: مسار يبدأ بالقسم قبل الكلية",
-                        "الخيار د: مسار يبدأ بالسداسي قبل السنة",
-                        "الخيار هـ: مسار غير مرتب"
+                        "المسار الصحيح: كلية → قسم → سنة ثانية → سداسي 4 → المقياس",
+                        "مسار: سنة ثانية → قسم → كلية → سداسي 4 → المقياس",
+                        "مسار: قسم → سنة ثانية → كلية → سداسي 4 → المقياس",
+                        "مسار: كلية → سداسي 4 → سنة ثانية → قسم → المقياس",
+                        "مسار: سداسي 4 → سنة ثانية → كلية → قسم → المقياس"
                     ]
                 },
                 correct: 0
@@ -399,12 +895,21 @@
         function toggleLang() {
             currentLang = currentLang === 'en' ? 'ar' : 'en';
             document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-            document.querySelector('.lang-btn').textContent = currentLang === 'en' ? 'العربية' : 'English';
+            const btn = document.querySelector('.lang-btn');
+            btn.textContent = currentLang === 'en' ? btn.getAttribute('data-ar') : btn.getAttribute('data-en');
             
             // Update static labels
             document.querySelectorAll('[data-en]').forEach(el => {
-                el.textContent = el.getAttribute('data-' + currentLang);
+                if (el.id !== 'mainTitle') {
+                    el.textContent = el.getAttribute('data-' + currentLang);
+                }
             });
+
+            // Update main title separately if needed
+            const titleEl = document.getElementById('mainTitle');
+            if (titleEl) {
+                titleEl.textContent = titleEl.getAttribute('data-' + currentLang);
+            }
             
             renderQuestions();
         }
@@ -432,12 +937,35 @@
             return str.replace(/[^a-zA-Z0-9_\-]/g, '_').substring(0, 50);
         }
 
+        function getPerformanceMessage(score, total) {
+            const percentage = (score / total) * 100;
+            
+            if (currentLang === 'en') {
+                if (percentage === 100) return { text: 'Perfect Score! 🎉', class: 'excellent' };
+                if (percentage >= 85) return { text: 'Outstanding Performance! 🌟', class: 'excellent' };
+                if (percentage >= 70) return { text: 'Very Good Work! 👏', class: 'very-good' };
+                if (percentage >= 50) return { text: 'Good Effort! 💪', class: 'good' };
+                return { text: 'Keep Practicing! 📚', class: 'needs-improvement' };
+            } else {
+                if (percentage === 100) return { text: 'درجة مثالية! 🎉', class: 'excellent' };
+                if (percentage >= 85) return { text: 'أداء متميز! 🌟', class: 'excellent' };
+                if (percentage >= 70) return { text: 'عمل ممتاز! 👏', class: 'very-good' };
+                if (percentage >= 50) return { text: 'جهد جيد! 💪', class: 'good' };
+                return { text: 'استمر في التدريب! 📚', class: 'needs-improvement' };
+            }
+        }
+
         function submitQuiz() {
-            const group = document.getElementById('groupName').value;
-            const s1 = document.getElementById('student1').value;
+            const group = document.getElementById('groupName').value.trim();
+            const s1 = document.getElementById('student1').value.trim();
+
+            const messages = {
+                en: "Please enter Group Name and Student 1 Name",
+                ar: "يرجى إدخال اسم المجموعة والطالب 1 على الأقل"
+            };
 
             if (!group || !s1) {
-                alert(currentLang === 'en' ? "Please enter Group Name and Student 1 Name" : "يرجى إدخال اسم المجموعة والطالب 1 على الأقل");
+                alert(messages[currentLang]);
                 return;
             }
 
@@ -447,9 +975,9 @@
             });
 
             // Generate CSV
-            let csvContent = "QuestionID,AnswerIndex,Correct\n";
+            let csvContent = "QuestionID,AnswerIndex,Correct,StudentGroup,Student1\n";
             questions.forEach(q => {
-                csvContent += `${q.id},${answers[q.id] ?? 'None'},${answers[q.id] === q.correct}\n`;
+                csvContent += `${q.id},${answers[q.id] ?? 'None'},${answers[q.id] === q.correct ? 'Yes' : 'No'},${group},${s1}\n`;
             });
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -459,18 +987,64 @@
             a.download = `${sanitizeFilename(group)}_results.csv`;
             a.click();
 
-            // Show results
-            const s2 = document.getElementById('student2').value;
-            document.getElementById('modalBody').innerHTML = `
-                <div class="score-box">
-                    <div class="score">${score} / ${questions.length}</div>
-                    <p>${currentLang === 'en' ? 'Great job!' : 'عمل جيد!'}</p>
+            // Show results modal
+            const s2 = document.getElementById('student2').value.trim();
+            const performance = getPerformanceMessage(score, questions.length);
+
+            let studentHTML = `
+                <div class="student-item">
+                    <div class="student-avatar">1</div>
+                    <div class="student-info">
+                        <h4>${s1}</h4>
+                        <p>${currentLang === 'en' ? 'Primary Member' : 'عضو أساسي'}</p>
+                    </div>
                 </div>
-                <p><strong>${currentLang === 'en' ? 'Group:' : 'المجموعة:'}​</strong> ${group}</p>
-                <p><strong>${currentLang === 'en' ? 'Student 1:' : 'الطالب 1:'}​</strong> ${s1}</p>
-                ${s2 ? `<p><strong>${currentLang === 'en' ? 'Student 2:' : 'الطالب 2:'}​</strong> ${s2}</p>` : ''}
-                <p><strong>${currentLang === 'en' ? 'Status:' : 'الحالة:'}​</strong> ${currentLang === 'en' ? 'Results downloaded as CSV.' : 'تم تحميل النتائج كملف CSV.'}</p>
             `;
+
+            if (s2) {
+                studentHTML += `
+                    <div class="student-item">
+                        <div class="student-avatar">2</div>
+                        <div class="student-info">
+                            <h4>${s2}</h4>
+                            <p>${currentLang === 'en' ? 'Group Member' : 'عضو المجموعة'}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const downloadText = currentLang === 'en' ? 'Results downloaded successfully as CSV' : 'تم تحميل النتائج بنجاح كملف CSV';
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="score-container">
+                    <div class="score-circle">
+                        <div class="score-value">${score}</div>
+                        <div class="score-total">/ ${questions.length}</div>
+                    </div>
+                    <p class="performance-message ${performance.class}">${performance.text}</p>
+                </div>
+
+                <div class="results-section">
+                    <h3>${currentLang === 'en' ? 'Group Details' : 'تفاصيل المجموعة'}</h3>
+                    <div style="background: linear-gradient(135deg, #f8fafc 0%, #f0f4f8 100%); border-radius: 12px; padding: 16px; margin-bottom: 24px; border-left: 4px solid var(--secondary);">
+                        <p style="margin-bottom: 8px;"><strong>${currentLang === 'en' ? 'Group Name:' : 'اسم المجموعة:'}</strong> ${group}</p>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h3>${currentLang === 'en' ? 'Student Roster' : 'قائمة الطلاب'}</h3>
+                    <div class="student-list">
+                        ${studentHTML}
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 28px;">
+                    <span class="status-badge success">
+                        ✓ ${downloadText}
+                    </span>
+                </div>
+            `;
+
             document.getElementById('resultModal').classList.add('active');
         }
 
